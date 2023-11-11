@@ -215,6 +215,7 @@ def parse_script(script: bytes) -> List[Union[Opcodes, bytes]]:
 
 
 if __name__ == "__main__":
+    import binascii
     result = parse_script(
         binascii.a2b_hex(
             "483045022100f570245fdfc5f5adf435f9888d97de7c6173aace9785f3b3601b859ab9522582022030434c7883546a5f8573910d8a6bf9e0254a7c767f24f41eb50d5559e74d6d33014104f35021fa17cdffc2ce05526a0305a55d34e92dd88d8a63a5a55963e3884166cca2bc894fbaf56d0fa6f673be9d6605962d56ad034f507ffe6f5671c91cec7617" +
