@@ -190,12 +190,27 @@ def parse_script(script: bytes) -> List[Union[Opcodes, bytes]]:
                 parsed_script.append(parsed_data)
                 parsed_data = b""
             continue
+        elif data_len_size > 0:
+            data_len_size -= 1
+            data_len_bytes += script[i:i + 1]
+            if data_len_size == 0:
+                data_len = int.from_bytes(data_len_bytes, "little")
+                data_len_bytes = b""
         opcode = script[i]
         opcode, is_opcode = opcode_search(opcode)
         if not is_opcode:
-            parsed_script.append(opcode)
+            data_len = opcode
             continue
-        data_len = opcode
+        elif opcode == Opcodes.OP_PUSHDATA1:
+            data_len_size = 1
+            continue
+        elif opcode == Opcodes.OP_PUSHDATA2:
+            data_len_size = 2
+            continue
+        elif opcode == Opcodes.OP_PUSHDATA4:
+            data_len_size = 4
+            continue
+        parsed_script.append(opcode)
     return parsed_script
 
 
