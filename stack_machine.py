@@ -11,13 +11,21 @@ def stack_machine(script: bytes):
 
     for script in script_array:
         if type(script) == bytes:
-            # here
+            stack.append(script)
         elif script == Opcodes.OP_DUP:
-            # here
+            stack.append(stack[-1])
         elif script == Opcodes.OP_HASH160:
-            # here
+            stack.append(hash160(stack.pop()))
         elif script == Opcodes.OP_EQUALVERIFY:
-            # here
+            result = stack.pop() == stack.pop()
+            if not result:
+                return result
+        elif script == Opcodes.OP_EQUAL:
+            stack.append(stack.pop() == stack.pop())
+        elif script == Opcodes.OP_VERIFY:
+            result = stack.pop()
+            if not result:
+                return result
         elif script == Opcodes.OP_CHECKSIG:
             stack.pop()  # pubkey
             stack.pop()  # signature
